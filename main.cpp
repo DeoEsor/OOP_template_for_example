@@ -1,10 +1,9 @@
 #include <iostream>
-
 #include "lib.h"
 
 using namespace std;
 
 int main() {
-    cout << "Bruh: " << endl
-         << A() << endl;
+   lab0();
+   return 0;
 }
