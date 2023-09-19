@@ -1,52 +1,23 @@
 #include <iostream>
-#include <string>
 #include <typeinfo>
 
-auto print(auto x) { std::cout << x << std::endl; }
-
-auto input(std::string symbol, auto x) {
-   std::cout << symbol << ": ";
-   std::cin >> x;
-   return x;
-}
-
-void error(int err_code) {
-   switch (err_code) {
-      case 0:
-         print("Number must be unsignused");
-         exit(0);
-
-      case 1:
-         print("Number \"b\" must be more than number \"a\"");
-         exit(0);
-      case 2:
-         print("Please, input number, not string");
-         exit(0);
-      default:
-         break;
-   }
-}
-
-auto check_line(std::string line) {
+long long int check_num(std::string line) {
    long long int num;
    try {
       num = std::stoll(line);
    } catch (const std::exception) {
-      error(2);
+      return -3;
    }
 
-   if (num < 0) error(0);
+   if (num < 0) return -1;
    return num;
 }
-
-auto input_num(char symbol) {
-   std::string line;
-   long long int num;
-   num = check_line(input(": ", line));
-   return num;
+bool compare_nums(long long int num1, long long int num2) {
+   if (num2 <= num1) return false;
+   return true;
 }
 
-auto bin(long long int num) {
+long long int bin(long long int num) {
    long long int result{0}, position{1};
 
    while (num > 0) {
@@ -58,7 +29,7 @@ auto bin(long long int num) {
    return result;
 }
 
-auto count(long long int bin_number) {
+long long int count(long long int bin_number) {
    long long int result{0};
 
    while (bin_number) {
@@ -72,8 +43,7 @@ auto count(long long int bin_number) {
    return result;
 }
 
-auto sum_bin(long long int a, long long int b) {
-   if (b <= a) error(1);
+long long int sum_bin(long long int a, long long int b) {
 
    long long int sum{0};
 
@@ -85,12 +55,29 @@ auto sum_bin(long long int a, long long int b) {
    return sum;
 }
 
-int lab0() {
-   long long int a, b;
+std::string check_error(long long int err_code) {
+   switch (err_code) {
+      case -1:
+         return "Number must be unsignused";
 
-   a = input_num('a');
-   b = input_num('b');
-   print(sum_bin(a, b));
+      case -2:
+         return "Number \"b\" must be more than number \"a\"";
 
-   return 0;
+      case -3:
+         return "Please, input number, not string";
+
+      default:
+         return "";
+   }
+}
+
+long long int lab0(std::string a, std::string b) {
+   long long int num1, num2;
+   num1 = check_num(a);
+   if (num1 < 0) return num1;
+
+   num2 = check_num(b);
+   if (num2 < 0) return num2;
+   if (compare_nums(num1, num2)) return sum_bin(num1, num2);
+   return -2;
 }
